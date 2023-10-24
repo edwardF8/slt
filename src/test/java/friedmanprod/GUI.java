@@ -1,15 +1,23 @@
 package friedmanprod;
 
-import javax.swing.*;     
+import javax.swing.*;
+import javafx.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.Font;   
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
-public class GUI {
+//using jlatexmath we can parse equations
+
+public class GUI implements ActionListener{
     /**
      * Create the GUI and show it.  For thread safety,
      * this method should be invoked from the
      * event-dispatching thread.
      */
+
+    static JButton mainScreenButton;
     public static void createAndShowGUI() {
         //Create and set up the window.
         
@@ -17,30 +25,29 @@ public class GUI {
 
         JFrame frame = new JFrame("ExporeOffline");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setBounds(0,100,600,400);
+        frame.setBounds(0,100,800,600);
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel mainScreen = new JPanel();
-        JLabel title = new JLabel("ExploreOffline");
-        title.setBounds(0,0,300,100);
-        title.setFont(new Font("Serif", Font.PLAIN, 48));
-        JButton mainScreenButton = new JButton();
+        //* MAIN SCREEN
+        JLabel title = new JLabel("ExploreOffline",SwingConstants.CENTER); // Title Text
+        title.setFont(new Font("Serif", Font.PLAIN, 65));
+        title.setBounds(100,100,600,175);
+
+        mainScreenButton = new JButton(); // Opening Button
+        mainScreenButton.setBounds(300,350,200,50);
         mainScreenButton.setText("Explore!");
-        mainScreenButton.setBounds(250,250, 100, 50);
-        mainScreen.setLayout(new GridLayout(2,1));
+        mainScreenButton.addActionListener(this);
         
-        //Adds Elements to panel
-        mainScreen.add(title);
-        mainScreen.add(mainScreenButton);
+        // *Adds Elements to panel
+        frame.add(title);
+        frame.add(mainScreenButton);
         // Adds panels to Frame
-        frame.add(mainScreen);
-        
+
         //Display the window.
         
-        frame.setVisible(true);
     }
 
     public static void main(String[] args) {
@@ -52,4 +59,11 @@ public class GUI {
             }
         });
     }
+
+    @Override
+    public void actionPerformed(java.awt.event.ActionEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

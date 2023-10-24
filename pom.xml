@@ -25,6 +25,28 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-csv</artifactId>
+    <version>1.8</version>
+    </dependency>
+    <dependencies>
+    <!-- Other dependencies -->
+    <dependency>
+        <groupId>com.verybigcorp</groupId>
+        <artifactId>jlatexmath</artifactId>
+        <version>1.0.7</version> <!-- Adjust version as needed -->
+    </dependency>
+    </dependencies>
+    <dependencies>
+    <!-- Other dependencies -->
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>11.0.2</version> <!-- Adjust version as needed -->
+    </dependency>
+</dependencies>
+
   </dependencies>
 
   <build>

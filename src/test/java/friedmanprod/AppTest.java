@@ -10,15 +10,17 @@ import org.junit.Test;
 public class AppTest 
 {
     /**
-     * Rigorous Test :-)
+     * Rigorous Test 
      */
+    /* 
     @Test
     public void shouldAnswerWithTrue()
     {
         assertTrue( true );
     }
+    */
 
     public static void main(String[] args){
-        GUI.createAndShowGUI();
+        GUI gui = new GUI();
     }
 }

@@ -28,7 +28,21 @@ public class GUI implements ActionListener{
     static JButton readingSubjectChoice;
     static JButton scienceSubjectChoice;
     static JButton historySubjectChoice;
+    
+    // ! Grade choice
+    static JPanel gradeChoicePanel;
+    static JButton level1Button;
+    static JButton level2Button;
+    static JButton level3Button;
+    static JButton level4Button;
+    static JButton level5Button;
+    static JButton level6Button;
+    static JButton level7Button;
+    static JButton level8Button;
 
+
+
+    static JFrame frame;
 
     //Has to be in construcutor so we can use inheret this for Action Listners
     GUI(){
@@ -36,7 +50,7 @@ public class GUI implements ActionListener{
         
         //Add the ubiquitous "Hello World" label.        
 
-        JFrame frame = new JFrame("ExporeOffline");
+        frame = new JFrame("ExporeOffline");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBounds(0,100,800,600);
         frame.setResizable(false);
@@ -82,7 +96,6 @@ public class GUI implements ActionListener{
         scienceSubjectChoice.setIcon(hisIcon);
         historySubjectChoice.setIcon(sciIcon);
         
-        
         subjectButtonPannel.add(mathSubjectChoice);
         subjectButtonPannel.add(readingSubjectChoice);
         subjectButtonPannel.add(scienceSubjectChoice);
@@ -107,6 +120,49 @@ public class GUI implements ActionListener{
         //Display the window.
         frame.setVisible(true);
         
+    }
+
+    public static void newSubject(String subject;){
+        gradeChoicePanel = new JPanel();
+        JLabel gradeChoicePanel = new JLabel();
+
+        //set up template pannels
+        gradeChoicePanel.setText("Choose your grade!");
+        level1Button = new JButton();
+        level2Button = new JButton();
+        level3Button = new JButton();
+        level4Button = new JButton();
+        level5Button= new JButton();
+        level6Button = new JButton();
+        level7Button = new JButton();
+        level8Button = new JButton();
+
+        String[] levelArray = new String[8];
+        //uses lists to set each part depending on question
+        if(subject.equals("Math")){
+            levelArray = {"K-2nd Grade", "3rd-5th Grade", "Middle School", "Algebra 1", "Geometry", "Algebra 2 and Trigonometry", "Precalculus", "Calculus"};
+        }else if(subject.equals("English")){
+            levelArray = {"K-3rd Grade", "4th-5th Grade", "Middle School", ""}
+        }else if(subject.equals("Sci")){
+            levelArray
+        }else if(subject.equals("History"){
+
+        }else{
+            System.out.println("Subject not found, line 151 method not runnning");
+        }
+
+
+
+            level1Button.setText();
+            level2Button.setText();
+            level3Button.setText();
+            level4Button.setText();
+            level5Button.setText();
+            level6Button.setText();
+            level7Button.setText();
+            level8Button.setText();
+
+
     }
 
     @Override

@@ -1,6 +1,10 @@
+// TODO Make back button and text for level choice page, set allat up and test, only for math rn
+
+
+
 package friedmanprod;
 
-
+import friedmanprod.Dataprocesser;
 import java.io.File;
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +21,10 @@ public class GUI implements ActionListener{
      * event-dispatching thread.
      */
 
+
+
+    static String currentSubject;
+    static String currentLevel;
     //! Main Screen
     static JButton mainScreenButton;
     static JLabel title;
@@ -108,7 +116,27 @@ public class GUI implements ActionListener{
         subjectTextHeader.setVisible(false);
         subjectButtonPannel.setVisible(false);
 
-
+        //! Grade choice
+        gradeChoicePanel = new JPanel();
+        level1Button = new JButton();
+        level2Button = new JButton();
+        level3Button = new JButton();
+        level4Button = new JButton();
+        level5Button= new JButton();
+        level6Button = new JButton();
+        level7Button = new JButton();
+        level8Button = new JButton();
+        gradeChoicePanel.setLayout(new GridLayout(4, 2, 50, 50));
+        gradeChoicePanel.add(level1Button);
+        gradeChoicePanel.add(level2Button);
+        gradeChoicePanel.add(level3Button);
+        gradeChoicePanel.add(level4Button);
+        gradeChoicePanel.add(level5Button);
+        gradeChoicePanel.add(level6Button);
+        gradeChoicePanel.add(level7Button);
+        gradeChoicePanel.add(level8Button);
+        // TODO Make back button, text pannel, add all the text to this joint
+        gradeChoicePanel.setBounds();
 
         // *Adds Elements to panel
         
@@ -122,47 +150,27 @@ public class GUI implements ActionListener{
         
     }
 
-    public static void newSubject(String subject;){
+    public static void subjectSetup(String subject){
         gradeChoicePanel = new JPanel();
         JLabel gradeChoicePanel = new JLabel();
 
         //set up template pannels
-        gradeChoicePanel.setText("Choose your grade!");
-        level1Button = new JButton();
-        level2Button = new JButton();
-        level3Button = new JButton();
-        level4Button = new JButton();
-        level5Button= new JButton();
-        level6Button = new JButton();
-        level7Button = new JButton();
-        level8Button = new JButton();
 
-        String[] levelArray = new String[8];
+        String[] levelArray = Dataprocesser.newSubject(subject);
+        String subjectText = levelArray[0];
         //uses lists to set each part depending on question
-        if(subject.equals("Math")){
-            levelArray = {"K-2nd Grade", "3rd-5th Grade", "Middle School", "Algebra 1", "Geometry", "Algebra 2 and Trigonometry", "Precalculus", "Calculus"};
-        }else if(subject.equals("English")){
-            levelArray = {"K-3rd Grade", "4th-5th Grade", "Middle School", ""}
-        }else if(subject.equals("Sci")){
-            levelArray
-        }else if(subject.equals("History"){
 
-        }else{
-            System.out.println("Subject not found, line 151 method not runnning");
-        }
+        level1Button.setText(levelArray[1]);
+        level2Button.setText(levelArray[2]);
+        level3Button.setText(levelArray[3]);
+        level4Button.setText(levelArray[4]);
+        level5Button.setText(levelArray[5]);
+        level6Button.setText(levelArray[6]);
+        level7Button.setText(levelArray[7]);
+        level8Button.setText(levelArray[8]);
+        subjectTextHeader.setText(subjectText);
 
-
-
-            level1Button.setText();
-            level2Button.setText();
-            level3Button.setText();
-            level4Button.setText();
-            level5Button.setText();
-            level6Button.setText();
-            level7Button.setText();
-            level8Button.setText();
-
-
+        currentSubject = subject;
     }
 
     @Override
@@ -173,6 +181,10 @@ public class GUI implements ActionListener{
             mainScreenButton.setVisible(false);
             subjectTextHeader.setVisible(true);
             subjectButtonPannel.setVisible(true);
+        }else if(e.getSource() == mathSubjectChoice){
+            subjectTextHeader.setVisible(true);
+            subjectButtonPannel.setVisible(true);
+
         }
         
     }

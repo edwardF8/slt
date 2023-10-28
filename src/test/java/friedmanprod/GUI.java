@@ -4,7 +4,7 @@
 
 package friedmanprod;
 
-import friedmanprod.Dataprocesser;
+import friedmanprod.dataprocesser;
 import java.io.File;
 import javax.swing.*;
 import java.awt.*;
@@ -47,9 +47,8 @@ public class GUI implements ActionListener{
     static JButton level6Button;
     static JButton level7Button;
     static JButton level8Button;
-
-
-
+    static JButton exitLevelButton;
+    static JLabel gradeChoiceText;
     static JFrame frame;
 
     //Has to be in construcutor so we can use inheret this for Action Listners
@@ -78,12 +77,14 @@ public class GUI implements ActionListener{
         //! SUBJECT OPTION SCREEN, ONLY ALG QUESTIONS R SETUP RN!!!
 
         //* Images
+        
         ImageIcon mathIcon= new ImageIcon("src/images/math.png");
         ImageIcon readIcon = new ImageIcon("src/images/reading.png");
         ImageIcon hisIcon = new ImageIcon("src/images/socialstudy.png");
         ImageIcon sciIcon = new ImageIcon("src/images/math.png");
-
         
+        
+
         //* Buttons Pannel
         
         subjectButtonPannel = new JPanel();
@@ -99,15 +100,22 @@ public class GUI implements ActionListener{
         scienceSubjectChoice.setText("Science");
         historySubjectChoice.setText("Social Studies");
         
+        /* 
         mathSubjectChoice.setIcon(mathIcon);
         readingSubjectChoice.setIcon(readIcon);
         scienceSubjectChoice.setIcon(hisIcon);
         historySubjectChoice.setIcon(sciIcon);
-        
+        */
+        mathSubjectChoice.addActionListener(this);
+        readingSubjectChoice.addActionListener(this);
+        scienceSubjectChoice.addActionListener(this);
+        historySubjectChoice.addActionListener(this);
         subjectButtonPannel.add(mathSubjectChoice);
         subjectButtonPannel.add(readingSubjectChoice);
         subjectButtonPannel.add(scienceSubjectChoice);
         subjectButtonPannel.add(historySubjectChoice);
+
+
         
         subjectTextHeader = new JLabel();
         subjectTextHeader.setBounds(225,60,350,100);
@@ -115,6 +123,7 @@ public class GUI implements ActionListener{
         subjectTextHeader.setFont(new Font("Serif", Font.PLAIN, 45));
         subjectTextHeader.setVisible(false);
         subjectButtonPannel.setVisible(false);
+
 
         //! Grade choice
         gradeChoicePanel = new JPanel();
@@ -126,6 +135,9 @@ public class GUI implements ActionListener{
         level6Button = new JButton();
         level7Button = new JButton();
         level8Button = new JButton();
+        exitLevelButton = new JButton();
+        gradeChoiceText = new JLabel();
+
         gradeChoicePanel.setLayout(new GridLayout(4, 2, 50, 50));
         gradeChoicePanel.add(level1Button);
         gradeChoicePanel.add(level2Button);
@@ -136,7 +148,25 @@ public class GUI implements ActionListener{
         gradeChoicePanel.add(level7Button);
         gradeChoicePanel.add(level8Button);
         // TODO Make back button, text pannel, add all the text to this joint
-        gradeChoicePanel.setBounds();
+        gradeChoicePanel.setBounds(100,150,600,300);
+         //450 + 50 500 550
+        gradeChoicePanel.setVisible(false);
+        gradeChoiceText.setVisible(false);
+        gradeChoiceText.setBounds(225,50,350,75);
+        gradeChoiceText.setFont(new Font("Serif", Font.PLAIN, 45));
+        exitLevelButton.setText("Back");
+        exitLevelButton.addActionListener(this);
+        exitLevelButton.setBounds(350,500,100,50);
+        exitLevelButton.setVisible(false);
+
+
+        //TODO Topics
+        // Each button has a index, capture that index and since you already have the current Subject var
+        // run it thru a process in dataprocesser and do 6 topics for each question
+        // store in lists
+
+
+        //gradeChoicePanel.setBounds();
 
         // *Adds Elements to panel
         
@@ -145,21 +175,22 @@ public class GUI implements ActionListener{
         frame.add(mainScreenButton);
         frame.add(subjectTextHeader);
         frame.add(subjectButtonPannel);
+
+        frame.add(gradeChoicePanel);
+        frame.add(gradeChoiceText);
+        frame.add(exitLevelButton);
         //Display the window.
         frame.setVisible(true);
         
     }
 
     public static void subjectSetup(String subject){
-        gradeChoicePanel = new JPanel();
-        JLabel gradeChoicePanel = new JLabel();
-
         //set up template pannels
-
-        String[] levelArray = Dataprocesser.newSubject(subject);
+        gradeChoiceText.setBounds(225,50,350,75);
+        gradeChoiceText.setFont(new Font("Serif", Font.PLAIN, 45));
+        String[] levelArray = dataprocesser.newSubject(subject);
         String subjectText = levelArray[0];
         //uses lists to set each part depending on question
-
         level1Button.setText(levelArray[1]);
         level2Button.setText(levelArray[2]);
         level3Button.setText(levelArray[3]);
@@ -168,8 +199,7 @@ public class GUI implements ActionListener{
         level6Button.setText(levelArray[6]);
         level7Button.setText(levelArray[7]);
         level8Button.setText(levelArray[8]);
-        subjectTextHeader.setText(subjectText);
-
+        gradeChoiceText.setText(subjectText);
         currentSubject = subject;
     }
 
@@ -182,9 +212,41 @@ public class GUI implements ActionListener{
             subjectTextHeader.setVisible(true);
             subjectButtonPannel.setVisible(true);
         }else if(e.getSource() == mathSubjectChoice){
+            subjectTextHeader.setVisible(false);
+            subjectButtonPannel.setVisible(false);
+            subjectSetup("Math");
+            gradeChoicePanel.setVisible(true);
+            gradeChoiceText.setVisible(true);
+            exitLevelButton.setVisible(true);
+        }else if(e.getSource() == readingSubjectChoice){
+            subjectTextHeader.setVisible(false);
+            subjectButtonPannel.setVisible(false);
+            subjectSetup("English");
+            gradeChoicePanel.setVisible(true);
+            gradeChoiceText.setVisible(true);
+            exitLevelButton.setVisible(true);
+        }else if(e.getSource() == scienceSubjectChoice){
+            subjectTextHeader.setVisible(false);
+            subjectButtonPannel.setVisible(false);
+            subjectSetup("Sci");
+            gradeChoicePanel.setVisible(true);
+            gradeChoiceText.setVisible(true);
+            exitLevelButton.setVisible(true);
+        }else if(e.getSource() == historySubjectChoice){
+            subjectTextHeader.setVisible(false);
+            subjectButtonPannel.setVisible(false);
+            subjectSetup("History");
+            gradeChoiceText.setFont(new Font("Serif", Font.PLAIN, 35));
+            gradeChoicePanel.setVisible(true);
+            gradeChoiceText.setVisible(true);
+            exitLevelButton.setVisible(true);
+        }else if(e.getSource() == exitLevelButton){
             subjectTextHeader.setVisible(true);
             subjectButtonPannel.setVisible(true);
 
+            gradeChoicePanel.setVisible(false);
+            gradeChoiceText.setVisible(false);
+            exitLevelButton.setVisible(false);
         }
         
     }
@@ -198,6 +260,6 @@ public class GUI implements ActionListener{
         return null;
     }
     }
+    
 
-
-}
+        }

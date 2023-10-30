@@ -13,15 +13,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.Thread.*;
+import java.util.Arrays;
 
 //using jlatexmath we can parse equations
 
 public class GUI implements ActionListener, ItemListener {
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
+
 
 
 
@@ -50,14 +47,14 @@ public class GUI implements ActionListener, ItemListener {
     static JPanel topicChoicePanel;
     static JCheckBox t1CB, t2CB,t3CB,t4CB,t5CB,t6CB;
     static JLabel topicLabel;
-    static JButton topicBackButton;
+    static JButton topicBackButton, topicSubmitButton;
 
     //Has to be in construcutor so we can use inheret this for Action Listners
+    /**
+     * 
+     */
     GUI(){
-        //Create and set up the window.
-        
-        //Add the ubiquitous "Hello World" label.        
-
+        //Fraem setup.
         frame = new JFrame("ExporeOffline");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBounds(0,100,800,600);
@@ -75,7 +72,7 @@ public class GUI implements ActionListener, ItemListener {
         mainScreenButton.setText("Explore!");
         
 
-        //! SUBJECT OPTION SCREEN, ONLY ALG QUESTIONS R SETUP RN!!!
+        //! SUBJECT OPTION SCREEN
 
         //* Images
         
@@ -159,7 +156,6 @@ public class GUI implements ActionListener, ItemListener {
         gradeChoicePanel.add(level7Button);
         gradeChoicePanel.add(level8Button);
         gradeChoicePanel.setBounds(100,150,600,300);
-         //450 + 50 500 550
         gradeChoicePanel.setVisible(false);
         gradeChoiceText.setVisible(false);
         gradeChoiceText.setBounds(225,50,350,75);
@@ -169,10 +165,12 @@ public class GUI implements ActionListener, ItemListener {
         exitLevelButton.setBounds(350,500,100,50);
         exitLevelButton.setVisible(false);
 
+
         //! Topics choice page
         topicChoicePanel = new JPanel();
         topicLabel = new JLabel();
         topicBackButton = new JButton();
+        topicSubmitButton = new JButton();
         t1CB = new JCheckBox();
         t2CB = new JCheckBox();
         t3CB = new JCheckBox();
@@ -180,20 +178,30 @@ public class GUI implements ActionListener, ItemListener {
         t5CB = new JCheckBox();
         t6CB = new JCheckBox();
 
-        topicBackButton.setText("Select These Topics");
-        topicBackButton.setBounds(225,450,350,100);
-        topicBackButton.setFont(new Font("Serif", Font.PLAIN, 45));
+        topicLabel.setBounds(225,25,600,100);
+        topicLabel.setFont(new Font("Serif", Font.PLAIN, 35));
+
         topicChoicePanel.setLayout(new GridLayout(2,3,40,60));
-        topicChoicePanel.setBounds(100,150,600,400);
+        topicChoicePanel.setBounds(100,125,600,300);
+
         
+        topicBackButton.setText("Back");
+        topicBackButton.setBounds(100,475,250,75);
+
+
+        topicSubmitButton.setText("Select Topics");
+        topicSubmitButton.setBounds(450,475,250,75);
+
+
         t1CB.addItemListener(this);
         t2CB.addItemListener(this);
         t3CB.addItemListener(this);
         t4CB.addItemListener(this);
         t5CB.addItemListener(this);
         t6CB.addItemListener(this);
-        topicBackButton.addItemListener(this);
-
+        topicBackButton.addActionListener(this);
+        topicSubmitButton.addActionListener(this);
+        
         topicChoicePanel.add(t1CB);
         topicChoicePanel.add(t2CB);
         topicChoicePanel.add(t3CB);
@@ -204,7 +212,8 @@ public class GUI implements ActionListener, ItemListener {
         topicChoicePanel.setVisible(false);
         topicBackButton.setVisible(false);
         topicLabel.setVisible(false);
-
+        topicSubmitButton.setVisible(false);
+        
         //TODO Topics
         // Each button has a index, capture that index and since you already have the current Subject var
         // run it thru a process in dataprocesser and do 6 topics for each question
@@ -228,6 +237,7 @@ public class GUI implements ActionListener, ItemListener {
         frame.add(topicBackButton);
         frame.add(topicChoicePanel);
         frame.add(topicLabel);
+        frame.add(topicSubmitButton);
         //Display the window.
         frame.setVisible(true);
         
@@ -238,6 +248,7 @@ public class GUI implements ActionListener, ItemListener {
         gradeChoiceText.setBounds(225,50,350,75);
         gradeChoiceText.setFont(new Font("Serif", Font.PLAIN, 45));
         String[] levelArray = dataprocesser.newSubject(subject);
+        
         String subjectText = levelArray[0];
         //uses lists to set each part depending on question
         level1Button.setText(levelArray[1]);
@@ -251,18 +262,43 @@ public class GUI implements ActionListener, ItemListener {
         gradeChoiceText.setText(subjectText);
         currentSubject = subject;
     }
+    static boolean[] topicCheckedList = {false,false,false,false,false,false};
 
     public static void levelSetup(String subject, String level){
+        Arrays.fill(topicCheckedList, false);
         String[] topicArray = dataprocesser.newLevels(level, subject);
-        t1CB.setText(topicArray[1]);
-        t2CB.setText(topicArray[2]);
-        t3CB.setText(topicArray[3]);
-        t4CB.setText(topicArray[4]);
-        t5CB.setText(topicArray[5]);
-        t6CB.setText(topicArray[6]);
-        topicLabel.setText(topicArray[0]);
+
+        t1CB.setText(topicArray[0]);
+        t2CB.setText(topicArray[1]);
+        t3CB.setText(topicArray[2]);
+        t4CB.setText(topicArray[3]);
+        t5CB.setText(topicArray[4]);
+        t6CB.setText(topicArray[5]);
+        topicLabel.setText(level + "Topics");
     }
 
+    
+
+    //! FOR CHECKBOXES
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        // TODO Auto-generated method stub
+        if(e.getSource() == t1CB){
+            topicCheckedList[0] = !topicCheckedList[0];
+        }else if(e.getSource()== t2CB){
+            topicCheckedList[1] = !topicCheckedList[1];
+        }else if(e.getSource()== t3CB){
+            topicCheckedList[2] = !topicCheckedList[2];
+        }else if(e.getSource()== t4CB){
+            topicCheckedList[3] = !topicCheckedList[3];
+        }else if(e.getSource()== t5CB){
+            topicCheckedList[4] = !topicCheckedList[4];
+        }else if(e.getSource()== t6CB){
+            topicCheckedList[5] = !topicCheckedList[5];
+        }
+    }
+
+    //! FOR BUTTONS
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
         // TODO Auto-generated method stub
@@ -288,7 +324,7 @@ public class GUI implements ActionListener, ItemListener {
         }else if(e.getSource() == scienceSubjectChoice){
             subjectTextHeader.setVisible(false);
             subjectButtonPannel.setVisible(false);
-            subjectSetup("Sci");
+            subjectSetup("Science");
             gradeChoicePanel.setVisible(true);
             gradeChoiceText.setVisible(true);
             exitLevelButton.setVisible(true);
@@ -316,8 +352,9 @@ public class GUI implements ActionListener, ItemListener {
             topicBackButton.setVisible(true);
             topicChoicePanel.setVisible(true);
             topicLabel.setVisible(true);
+            topicSubmitButton.setVisible(true);
         }else if(e.getSource() == level2Button){
-            levelSetup(currentSubject, level1Button.getText());
+            levelSetup(currentSubject, level2Button.getText());
             gradeChoicePanel.setVisible(false);
             gradeChoiceText.setVisible(false);
             exitLevelButton.setVisible(false);
@@ -325,8 +362,10 @@ public class GUI implements ActionListener, ItemListener {
             topicBackButton.setVisible(true);
             topicChoicePanel.setVisible(true);
             topicLabel.setVisible(true);
+            topicSubmitButton.setVisible(true);
+
         }else if(e.getSource() == level3Button){
-            levelSetup(currentSubject, level1Button.getText());
+            levelSetup(currentSubject, level3Button.getText());
             gradeChoicePanel.setVisible(false);
             gradeChoiceText.setVisible(false);
             exitLevelButton.setVisible(false);
@@ -334,8 +373,9 @@ public class GUI implements ActionListener, ItemListener {
             topicBackButton.setVisible(true);
             topicChoicePanel.setVisible(true);
             topicLabel.setVisible(true);
+            topicSubmitButton.setVisible(true);
         }else if(e.getSource() == level4Button){
-            levelSetup(currentSubject, level1Button.getText());
+            levelSetup(currentSubject, level4Button.getText());
             gradeChoicePanel.setVisible(false);
             gradeChoiceText.setVisible(false);
             exitLevelButton.setVisible(false);
@@ -343,36 +383,52 @@ public class GUI implements ActionListener, ItemListener {
             topicBackButton.setVisible(true);
             topicChoicePanel.setVisible(true);
             topicLabel.setVisible(true);
+            topicSubmitButton.setVisible(true);
         }else if(e.getSource() == level5Button){
-            levelSetup(currentSubject, level1Button.getText());
+            levelSetup(currentSubject, level5Button.getText());
             gradeChoicePanel.setVisible(false);
             gradeChoiceText.setVisible(false);
             exitLevelButton.setVisible(false);
 
             topicBackButton.setVisible(true);
             topicChoicePanel.setVisible(true);
+            topicSubmitButton.setVisible(true);
             topicLabel.setVisible(true);
         }else if(e.getSource() == level6Button){
-            levelSetup(currentSubject, level1Button.getText());
+            levelSetup(currentSubject, level6Button.getText());
             gradeChoicePanel.setVisible(false);
             gradeChoiceText.setVisible(false);
             exitLevelButton.setVisible(false);
 
             topicBackButton.setVisible(true);
+            topicSubmitButton.setVisible(true);
             topicChoicePanel.setVisible(true);
             topicLabel.setVisible(true);
         }else if(e.getSource() == topicBackButton){
-            gradeChoicePanel.setVisible(false);
-            gradeChoiceText.setVisible(false);
-            exitLevelButton.setVisible(false);
+            gradeChoicePanel.setVisible(true);
+            gradeChoiceText.setVisible(true);
+            exitLevelButton.setVisible(true);
 
             topicBackButton.setVisible(false);
+            topicSubmitButton.setVisible(false);
             topicChoicePanel.setVisible(false);
             topicLabel.setVisible(false);
+        }else if(e.getSource() == topicSubmitButton){
+            //topicBackButton.setVisible(false);
+            //topicChoicePanel.setVisible(false);
+            //topicLabel.setVisible(false);
+            //topicSubmitButton.setVisible(false);
+
+            for(boolean i : topicCheckedList){
+                System.out.println(i);
+            }
+        }
+        else{
+
         }
         
     }
-
+    /* unused method
     private static ImageIcon createImageIcon(String path) {
     java.net.URL imgURL = GUI.class.getResource(path);
     if (imgURL != null) {
@@ -382,12 +438,6 @@ public class GUI implements ActionListener, ItemListener {
         return null;
     }
     }
+    */
 
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'itemStateChanged'");
     }
-    
-
-        }

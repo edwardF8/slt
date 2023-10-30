@@ -21,6 +21,6 @@ public class AppTest
     */
 
     public static void main(String[] args){
-        GUI gui = new GUI();
+        testGUI gui = new testGUI();
     }
 }

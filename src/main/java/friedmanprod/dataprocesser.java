@@ -5,7 +5,7 @@ package friedmanprod;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-
+import java.util.ArrayList;
 
 public class dataprocesser{
 
@@ -20,7 +20,7 @@ public class dataprocesser{
         }else if(subject.equals("English")){
             String[] englishLevelsArray = {"English Levels","K-3rd Grade", "4th-5th Grade", "Middle School", "High School English", "Journalism", "Philosophy", "Creative Language", "College Literature"};
             return(englishLevelsArray);
-        }else if(subject.equals("Sci")){
+        }else if(subject.equals("Science")){
             String[] scienceLevelsArray = {"Science Levels","Beginner Science Concepts","Beginner Bio/Chem/Physics", "Biology", "Chemistry", "Physics", "Material Sciences", "Astrophysics", "Geology"};
             return(scienceLevelsArray);
         }else if(subject.equals("History")){
@@ -45,6 +45,7 @@ public class dataprocesser{
                 case("Middle School"):
                     break;
                 case("Algebra 1"):
+                    System.out.println("Teset");
                     String[] list = {"Algebra Fundamentals", "Solving Equations", "Functions","Quadratics", "Exponents/Radicals", "Graphs"};
                     return(list);    
                 case("Geometry"):
@@ -115,12 +116,13 @@ public class dataprocesser{
                     break;
             }
         }
-
-        //TODO Create functiality to add topcis to arraylist        
         return(levelArray);
         }
     
 }
 
-
+//go thru arraylisy, for each loop 
 // TODO For topic question functions, you make a  list
+public static void questionSetup(){
+
+}

@@ -45,13 +45,12 @@
     <dependency>
         <groupId>com.verybigcorp</groupId>
         <artifactId>jlatexmath</artifactId>
-        <version>1.0.7</version> <!-- Adjust version as needed -->
+        <version>1.0.7</version> 
     </dependency>
-
     <dependency>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-controls</artifactId>
-        <version>11.0.2</version> <!-- Adjust version as needed -->
+        <version>11.0.2</version> 
     </dependency>
 </dependencies>
 

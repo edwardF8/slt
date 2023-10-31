@@ -1,31 +1,29 @@
 package friedmanprod;
-
-import java.awt.GridLayout;
 import javax.swing.*;
+import org.scilab.forge.jlatexmath.*;
 
 public class testGUI {
-    static JFrame f;
-    testGUI(){
-        f = new JFrame("frame"); 
-        // set layout of frame 
-        f.setLayout(new GridLayout(1,2)); 
-        // create checkbox 
-        JCheckBox c1 = new JCheckBox(); 
-        JCheckBox c2 = new JCheckBox(); 
-        c1.setText("Check me!");
-        c2.setText("Dont check me!");
-        // create a new panel 
-        JPanel p = new JPanel(); 
-        // add checkbox to panel 
-        p.add(c1); 
-        p.add(c2);
-        // add panel to frame 
-        f.add(p); 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            // Create the Swing JFrame
+            JFrame frame = new JFrame("LaTeX in Swing");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(400, 300);
 
-        // set the size of frame 
-        f.setSize(300, 300); 
+            // Create a JMathComponent to display LaTeX content
+            JMathComponent mathComponent = new JMathComponent();
+            
+            // Set the LaTeX content to render
+            String latexExpression = "E=mc^2"; // Your LaTeX expression
+            
+            // Render the LaTeX expression
+            mathComponent.setFormula(latexExpression);
 
-        f.show(); 
+            // Add the JMathComponent to the JFrame
+            frame.add(mathComponent);
 
+            // Display the JFrame
+            frame.setVisible(true);
+        });
     }
 }

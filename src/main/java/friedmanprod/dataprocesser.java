@@ -5,9 +5,13 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collections;
+
+
 public class dataprocesser{
 
     dataprocesser(){
@@ -51,7 +55,6 @@ public class dataprocesser{
                 case("Middle School"):
                     break;
                 case("Algebra 1"):
-                    System.out.println("Teset");
                     String[] list = {"Algebra Fundamentals", "Solving Equations", "Functions","Quadratics", "Exponents&Radicals", "Graphs"};
                     currentTopics = list.clone();
                     return(list);    
@@ -95,6 +98,7 @@ public class dataprocesser{
                     break;
                 case("Physics"):
                     String[] list = {"Kinematics&Motion", "Newtown's Laws&Forces", "Work&Energy", "Impulse&Momentum","Torque and Angular momentum", "Electricity and Magnetism"};
+                    currentTopics = list.clone();
                     return(list);    
                 case("Material Sciences"):
                     break;
@@ -128,17 +132,25 @@ public class dataprocesser{
 
     
 //! CHANGE TO STRING AFTER
-    public static void questionSetup(boolean topicChoice[],int numQuestions){
-        List<String[][]> questionList = new ArrayList<>();
-
+    public static ArrayList<ArrayList<String>> questionSetup(boolean topicChoice[],int numQuestions){
+        ArrayList<ArrayList<String>> questionList = new ArrayList<ArrayList<String>>();
+        // Questionable use of List, figure out better way
         for(int i = 0;i<topicChoice.length;i++){
             if(topicChoice[i] == true){
                 String[][] arrayToAdd = generateArray(currentTopics[i]);
-                questionList.add(arrayToAdd);
+                for(int c = 0; c<arrayToAdd.length;c++){
+                    questionList.add(new ArrayList<String>());
+                    for(int b =0; b<arrayToAdd[c].length;b++){
+                        questionList.get(c).add(arrayToAdd[c][b]);
+                    }
+                }
             }
-            
         }
+        Collections.shuffle(questionList);
+        return questionList;
     }
+
+    //ARRAYLIST DUMMY
     
     /* 
      * Take in binarry arry
@@ -153,7 +165,7 @@ public class dataprocesser{
     
     public static String[][] generateArray(String s){
         String noSpace = s.replaceAll(" ", "_");
-        String csvFile = s + ".csv"; 
+        String csvFile = "src/data/" + noSpace + ".csv"; 
         try {
             FileReader fileReader = new FileReader(csvFile);
             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT);

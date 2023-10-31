@@ -1,4 +1,13 @@
-// TODO Make back button and text for level choice page, set allat up and test, only for math rn
+// TODO
+    // Process questions into latex
+    // Display questions on screen
+    // Link correct answer with answer inputed on screen, keep track of right questions, 
+    // use vecotr wit same dimensions ot track ho wmany of each category you got right
+
+    // GIve feedback and display explanation
+    // after its done, display right questions and amount in each category
+    // go back to subjects screen
+
 
 
 
@@ -55,7 +64,19 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
     static JLabel numQuestionLabel;
     static JSlider numQuestionSlider;
 
-    //! Setup screen
+    //! Question Screen
+    static JPanel mcOptions;
+    static JButton mcOptionA;
+    static JButton mcOptionB;
+    static JButton mcOptionC;
+    static JButton mcOptionD;
+    static JLabel questionLabel;
+    static JButton nextQueButton;
+    static JLabel feedbackLabel;
+
+
+    //! Results Screen
+
 
     //Has to be in construcutor so we can use inheret this for Action Listners
     /**
@@ -242,18 +263,12 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
         topicLabel.setVisible(false);
         topicSubmitButton.setVisible(false);
         
-
-
         //TODO Topics
         // Each button has a index, capture that index and since you already have the current Subject var
         // run it thru a process in dataprocesser and do 6 topics for each question
         // store in lists
-
-
         //gradeChoicePanel.setBounds();
-
         // *Adds Elements to panel
-        
         // *Adds panels to Frame
         frame.add(title);
         frame.add(mainScreenButton);
@@ -273,6 +288,7 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
         frame.setVisible(true);
         
     }
+
     //* Item State Changed @remind
     public static void subjectSetup(String subject){
         //set up template pannels
@@ -293,9 +309,8 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
         gradeChoiceText.setText(subjectText);
         currentSubject = subject;
     }
-    static boolean[] topicCheckedList = {false,false,false,false,false,false};
 
-    
+    static boolean[] topicCheckedList = {false,false,false,false,false,false};
     public static void levelSetup(String subject, String level){
         Arrays.fill(topicCheckedList, false);
         String[] topicArray = dataprocesser.newLevels(level, subject);
@@ -308,9 +323,6 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
         t6CB.setText(topicArray[5]);
         topicLabel.setText(level + "Topics");
     }
-
-    
-
 
     //! FOR CHECKBOXES
     static int maxValue = 0;
@@ -506,7 +518,8 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
             topicLabel.setVisible(false);
             topicSubmitButton.setVisible(false);
             numQuestionPanel.setVisible(false);
-            int num = numQuestionSlider.getValue();
+            dataprocesser.questionSetup(topicCheckedList, numQuestionSlider.getValue());
+
         }
         else{
 

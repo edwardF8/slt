@@ -15,9 +15,12 @@ import java.awt.event.ItemListener;
 import java.lang.Thread.*;
 import java.util.Arrays;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 //using jlatexmath we can parse equations
 
-public class GUI implements ActionListener, ItemListener {
+public class GUI implements ActionListener, ItemListener,ChangeListener {
 
 
 
@@ -48,6 +51,11 @@ public class GUI implements ActionListener, ItemListener {
     static JCheckBox t1CB, t2CB,t3CB,t4CB,t5CB,t6CB;
     static JLabel topicLabel;
     static JButton topicBackButton, topicSubmitButton;
+    static JPanel numQuestionPanel;
+    static JLabel numQuestionLabel;
+    static JSlider numQuestionSlider;
+
+    //! Setup screen
 
     //Has to be in construcutor so we can use inheret this for Action Listners
     /**
@@ -182,15 +190,35 @@ public class GUI implements ActionListener, ItemListener {
         topicLabel.setFont(new Font("Serif", Font.PLAIN, 35));
 
         topicChoicePanel.setLayout(new GridLayout(2,3,40,60));
-        topicChoicePanel.setBounds(100,125,600,300);
+        topicChoicePanel.setBounds(50,125,700,250);
 
+        numQuestionLabel = new JLabel();
+        numQuestionPanel = new JPanel();
+        numQuestionSlider = new JSlider(0,1);
+        numQuestionSlider.setMajorTickSpacing(5);
+        numQuestionSlider.setMinorTickSpacing(1);
+
+
+        numQuestionPanel.setBounds(200,385,400,100);
+        numQuestionPanel.setLayout(new GridLayout(2, 1, 0, 15));
+        
+        numQuestionLabel.setText("Amount of Questions: 0");
+        numQuestionLabel.setFont(new Font("Serif", Font.PLAIN, 35));
+        numQuestionSlider.setPaintTrack(true);
+        numQuestionSlider.setPaintTicks(true);
+        numQuestionSlider.setPaintLabels(true);
+        numQuestionSlider.addChangeListener(this);
+        numQuestionPanel.add(numQuestionLabel);
+        numQuestionPanel.add(numQuestionSlider);
+        numQuestionPanel.setVisible(false);
+
+        //500 - 385 = 115
         
         topicBackButton.setText("Back");
-        topicBackButton.setBounds(100,475,250,75);
-
+        topicBackButton.setBounds(100,500,250,50);
 
         topicSubmitButton.setText("Select Topics");
-        topicSubmitButton.setBounds(450,475,250,75);
+        topicSubmitButton.setBounds(450,500,250,50);
 
 
         t1CB.addItemListener(this);
@@ -214,6 +242,8 @@ public class GUI implements ActionListener, ItemListener {
         topicLabel.setVisible(false);
         topicSubmitButton.setVisible(false);
         
+
+
         //TODO Topics
         // Each button has a index, capture that index and since you already have the current Subject var
         // run it thru a process in dataprocesser and do 6 topics for each question
@@ -238,11 +268,12 @@ public class GUI implements ActionListener, ItemListener {
         frame.add(topicChoicePanel);
         frame.add(topicLabel);
         frame.add(topicSubmitButton);
+        frame.add(numQuestionPanel);
         //Display the window.
         frame.setVisible(true);
         
     }
-
+    //* Item State Changed @remind
     public static void subjectSetup(String subject){
         //set up template pannels
         gradeChoiceText.setBounds(225,50,350,75);
@@ -264,10 +295,11 @@ public class GUI implements ActionListener, ItemListener {
     }
     static boolean[] topicCheckedList = {false,false,false,false,false,false};
 
+    
     public static void levelSetup(String subject, String level){
         Arrays.fill(topicCheckedList, false);
         String[] topicArray = dataprocesser.newLevels(level, subject);
-
+        numQuestionSlider.setMaximum(1);
         t1CB.setText(topicArray[0]);
         t2CB.setText(topicArray[1]);
         t3CB.setText(topicArray[2]);
@@ -279,22 +311,70 @@ public class GUI implements ActionListener, ItemListener {
 
     
 
+
     //! FOR CHECKBOXES
-    @Override
+    static int maxValue = 0;
     public void itemStateChanged(ItemEvent e) {
         // TODO Auto-generated method stub
         if(e.getSource() == t1CB){
-            topicCheckedList[0] = !topicCheckedList[0];
-        }else if(e.getSource()== t2CB){
-            topicCheckedList[1] = !topicCheckedList[1];
-        }else if(e.getSource()== t3CB){
-            topicCheckedList[2] = !topicCheckedList[2];
-        }else if(e.getSource()== t4CB){
-            topicCheckedList[3] = !topicCheckedList[3];
-        }else if(e.getSource()== t5CB){
-            topicCheckedList[4] = !topicCheckedList[4];
-        }else if(e.getSource()== t6CB){
-            topicCheckedList[5] = !topicCheckedList[5];
+            if(topicCheckedList[0] == true){
+                maxValue -=20;
+                topicCheckedList[0] = false;
+            }else{
+                System.out.print(topicCheckedList[0]);
+                maxValue += 20;
+                topicCheckedList[0] = true;
+            }
+        }else if(e.getSource() == t2CB){
+            if(topicCheckedList[1] == true){
+                System.out.print(topicCheckedList[1]);
+                maxValue -=20;
+                topicCheckedList[1] = false;
+            }else{
+                maxValue += 20;
+                topicCheckedList[1] = true;
+            }
+        }else if(e.getSource() == t3CB){
+            if(topicCheckedList[2] == true){
+                maxValue -=20;
+                topicCheckedList[2] = false;
+            }else{
+                maxValue += 20;
+                topicCheckedList[2] = true;
+            }
+        }else if(e.getSource() == t4CB){
+            if(topicCheckedList[3] == true){
+                maxValue -=20;
+                topicCheckedList[3] = false;
+            }else{
+                maxValue += 20;
+                topicCheckedList[3] = true;
+            }
+        }else if(e.getSource() == t5CB){
+            if(topicCheckedList[4] == true){
+                maxValue -=20;
+                topicCheckedList[4] = false;
+            }else{
+                maxValue += 20;
+                topicCheckedList[4] = true;
+            }
+        }else if(e.getSource() == t6CB){
+            if(topicCheckedList[5] == true){
+                maxValue -= 20;
+                topicCheckedList[5] = false;
+            }else{
+                maxValue += 20;
+                topicCheckedList[5] = true;
+            }
+        }
+        System.out.println(maxValue);
+        numQuestionSlider.setMinimum(0);
+        numQuestionSlider.setMaximum(maxValue);
+    }
+
+    public void stateChanged(ChangeEvent e) {
+        if(e.getSource() == numQuestionSlider){
+            numQuestionLabel.setText("Amount of Questions: " + numQuestionSlider.getValue());
         }
     }
 
@@ -348,6 +428,7 @@ public class GUI implements ActionListener, ItemListener {
             gradeChoicePanel.setVisible(false);
             gradeChoiceText.setVisible(false);
             exitLevelButton.setVisible(false);
+            numQuestionPanel.setVisible(true);
 
             topicBackButton.setVisible(true);
             topicChoicePanel.setVisible(true);
@@ -358,6 +439,7 @@ public class GUI implements ActionListener, ItemListener {
             gradeChoicePanel.setVisible(false);
             gradeChoiceText.setVisible(false);
             exitLevelButton.setVisible(false);
+            numQuestionPanel.setVisible(true);
 
             topicBackButton.setVisible(true);
             topicChoicePanel.setVisible(true);
@@ -370,6 +452,7 @@ public class GUI implements ActionListener, ItemListener {
             gradeChoiceText.setVisible(false);
             exitLevelButton.setVisible(false);
 
+            numQuestionPanel.setVisible(true);
             topicBackButton.setVisible(true);
             topicChoicePanel.setVisible(true);
             topicLabel.setVisible(true);
@@ -379,6 +462,7 @@ public class GUI implements ActionListener, ItemListener {
             gradeChoicePanel.setVisible(false);
             gradeChoiceText.setVisible(false);
             exitLevelButton.setVisible(false);
+            numQuestionPanel.setVisible(true);
 
             topicBackButton.setVisible(true);
             topicChoicePanel.setVisible(true);
@@ -389,6 +473,7 @@ public class GUI implements ActionListener, ItemListener {
             gradeChoicePanel.setVisible(false);
             gradeChoiceText.setVisible(false);
             exitLevelButton.setVisible(false);
+            numQuestionPanel.setVisible(true);
 
             topicBackButton.setVisible(true);
             topicChoicePanel.setVisible(true);
@@ -399,6 +484,7 @@ public class GUI implements ActionListener, ItemListener {
             gradeChoicePanel.setVisible(false);
             gradeChoiceText.setVisible(false);
             exitLevelButton.setVisible(false);
+            numQuestionPanel.setVisible(true);
 
             topicBackButton.setVisible(true);
             topicSubmitButton.setVisible(true);
@@ -408,20 +494,19 @@ public class GUI implements ActionListener, ItemListener {
             gradeChoicePanel.setVisible(true);
             gradeChoiceText.setVisible(true);
             exitLevelButton.setVisible(true);
+            numQuestionPanel.setVisible(false);
 
             topicBackButton.setVisible(false);
             topicSubmitButton.setVisible(false);
             topicChoicePanel.setVisible(false);
             topicLabel.setVisible(false);
         }else if(e.getSource() == topicSubmitButton){
-            //topicBackButton.setVisible(false);
-            //topicChoicePanel.setVisible(false);
-            //topicLabel.setVisible(false);
-            //topicSubmitButton.setVisible(false);
-
-            for(boolean i : topicCheckedList){
-                System.out.println(i);
-            }
+            topicBackButton.setVisible(false);
+            topicChoicePanel.setVisible(false);
+            topicLabel.setVisible(false);
+            topicSubmitButton.setVisible(false);
+            numQuestionPanel.setVisible(false);
+            int num = numQuestionSlider.getValue();
         }
         else{
 
@@ -439,5 +524,7 @@ public class GUI implements ActionListener, ItemListener {
     }
     }
     */
+
+    
 
     }

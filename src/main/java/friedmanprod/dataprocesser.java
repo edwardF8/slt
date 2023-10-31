@@ -1,17 +1,22 @@
 package friedmanprod;
 
 //! Class processes data, most methods should be private and static to hide data from user
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import java.util.ArrayList;
-
+import java.util.List;
+import java.io.FileReader;
+import java.io.IOException;
 public class dataprocesser{
 
     dataprocesser(){
         System.out.println("Dataprocessor obj called");
     }
+
+    static String currentSubject;
+    static String[] currentTopics = new String[6];
+
 
     public static String[] newSubject(String subject){
         if(subject.equals("Math")){
@@ -34,6 +39,7 @@ public class dataprocesser{
 
     public static String[] newLevels(String level, String subject){
         String[] levelArray = new String[7];
+        currentSubject = subject;
         // Example list = 
         //if(subject.equals())
         if(subject.equals("Math")){
@@ -46,7 +52,8 @@ public class dataprocesser{
                     break;
                 case("Algebra 1"):
                     System.out.println("Teset");
-                    String[] list = {"Algebra Fundamentals", "Solving Equations", "Functions","Quadratics", "Exponents/Radicals", "Graphs"};
+                    String[] list = {"Algebra Fundamentals", "Solving Equations", "Functions","Quadratics", "Exponents&Radicals", "Graphs"};
+                    currentTopics = list.clone();
                     return(list);    
                 case("Geometry"):
                     break;
@@ -87,7 +94,7 @@ public class dataprocesser{
                 case("Chemistry"):
                     break;
                 case("Physics"):
-                    String[] list = {"Kinematics/Motion", "Newtown's Laws/Forces", "Work/Energy", "Impulse/Momentum","Torque and Angular momentum", "Electricity and Magnetism"};
+                    String[] list = {"Kinematics&Motion", "Newtown's Laws&Forces", "Work&Energy", "Impulse&Momentum","Torque and Angular momentum", "Electricity and Magnetism"};
                     return(list);    
                 case("Material Sciences"):
                     break;
@@ -118,11 +125,56 @@ public class dataprocesser{
         }
         return(levelArray);
         }
-    
-}
 
-//go thru arraylisy, for each loop 
-// TODO For topic question functions, you make a  list
-public static void questionSetup(){
+    
+//! CHANGE TO STRING AFTER
+    public static void questionSetup(boolean topicChoice[],int numQuestions){
+        List<String[][]> questionList = new ArrayList<>();
+
+        for(int i = 0;i<topicChoice.length;i++){
+            if(topicChoice[i] == true){
+                String[][] arrayToAdd = generateArray(currentTopics[i]);
+                questionList.add(arrayToAdd);
+            }
+            
+        }
+    }
+    
+    /* 
+     * Take in binarry arry
+     * find what topic we are curr on
+     * combine all the elments into a 2d array
+     * make temp string array
+     * delete elements every itreation and store element in 2d arrry
+     * 2d array intlized off amount of values, and amount per question
+     * send array back to question setup
+     */
+
+    
+    public static String[][] generateArray(String s){
+        String noSpace = s.replaceAll(" ", "_");
+        String csvFile = s + ".csv"; 
+        try {
+            FileReader fileReader = new FileReader(csvFile);
+            CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT);
+            List<CSVRecord> csvRecords = csvParser.getRecords();
+            int numRows = csvRecords.size();
+            int numCols = csvRecords.get(0).size();
+            String[][] data = new String[numRows][numCols];
+            for (int row = 0; row < numRows; row++) {
+                for (int col = 0; col < numCols; col++) {
+                    data[row][col] = csvRecords.get(row).get(col);
+                }
+            } 
+            csvParser.close();
+            return(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+        System.out.println("dataprocesser gen array returned null");
+        return null;
+    }
+
+    
 
 }

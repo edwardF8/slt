@@ -4,6 +4,8 @@ package friedmanprod;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -132,22 +134,52 @@ public class dataprocesser{
 
     
 //! CHANGE TO STRING AFTER
-    public static ArrayList<ArrayList<String>> questionSetup(boolean topicChoice[],int numQuestions){
-        ArrayList<ArrayList<String>> questionList = new ArrayList<ArrayList<String>>();
+    static ArrayList<ArrayList<String>> questionList ;
+    public static void nextQuestion(){
+        if(GUI.currentQuestionCount < GUI.questionCount){
+            ArrayList<String> curr = questionList.get(GUI.currentQuestionCount);
+            questionsMode.setButtons(curr.get(0), curr.get(1), curr.get(2), curr.get(3), curr.get(4), curr.get(6));
+            GUI.correctAnswer = Integer.parseInt(curr.get(5));
+            GUI.currentQuestionCount++;
+            GUI.mcOptions.setVisible(true);
+            GUI.questionLabel.setVisible(true);
+            GUI.frame.getContentPane().setBackground(new Color(238,238,238));
+        }else{
+            GUI.finalResultsPanel.setVisible(false);
+            GUI.finalL2.setText("   You got " + GUI.amountCorrect  +" questions right out of " + GUI.questionCount + "   ");
+            GUI.finalResultsPanel.setVisible(true);
+            GUI.mcOptions.setVisible(false);
+            GUI.questionLabel.setVisible(false);
+            GUI.frame.getContentPane().setBackground(new Color(238,238,238));
+        }
+    }
+
+
+
+    public static void questionSetup(int numQuestions,boolean topicChoice[]){
+        GUI.amountCorrect = 0;
+        GUI.questionCount = numQuestions;
+        questionList = arraySetup(topicChoice);
+        nextQuestion();
+
+    }
+
+    public static ArrayList<ArrayList<String>> arraySetup(boolean topicChoice[]){
+        ArrayList<ArrayList<String>> ql = new ArrayList<ArrayList<String>>();
         // Questionable use of List, figure out better way
         for(int i = 0;i<topicChoice.length;i++){
             if(topicChoice[i] == true){
                 String[][] arrayToAdd = generateArray(currentTopics[i]);
                 for(int c = 0; c<arrayToAdd.length;c++){
-                    questionList.add(new ArrayList<String>());
+                    ql.add(new ArrayList<String>());
                     for(int b =0; b<arrayToAdd[c].length;b++){
-                        questionList.get(c).add(arrayToAdd[c][b]);
+                        ql.get(c).add(arrayToAdd[c][b]);
                     }
                 }
             }
         }
-        Collections.shuffle(questionList);
-        return questionList;
+        Collections.shuffle(ql);
+        return ql;
     }
 
     //ARRAYLIST DUMMY

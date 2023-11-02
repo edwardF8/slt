@@ -24,16 +24,13 @@ import java.awt.event.ItemListener;
 import java.lang.Thread.*;
 import java.util.Arrays;
 
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 //using jlatexmath we can parse equations
 
 public class GUI implements ActionListener, ItemListener,ChangeListener {
-
-
-
-
     static String currentSubject;
     static String currentLevel;
     //! Main Screen
@@ -69,13 +66,29 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
     static JButton mcOptionA;
     static JButton mcOptionB;
     static JButton mcOptionC;
+    
     static JButton mcOptionD;
     static JLabel questionLabel;
+
+    //! Feedback screen
+    static JPanel feedbackPanel;
+    static JLabel feedbackAnswer;
+    static JLabel feedbackExplanation;
+    static JLabel feedbackText;
     static JButton nextQueButton;
-    static JLabel feedbackLabel;
+    
+    static int correctAnswer;
+    static int amountCorrect = 0;
+    static int questionCount = 0;
+    static int currentQuestionCount = 0;
 
 
     //! Results Screen
+    static JPanel finalResultsPanel;
+    static JButton closeQuestionsButton;
+    static JLabel finalL2;
+
+    
 
 
     //Has to be in construcutor so we can use inheret this for Action Listners
@@ -84,13 +97,14 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
      */
     GUI(){
         //Fraem setup.
+
         frame = new JFrame("ExporeOffline");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBounds(0,100,800,600);
         frame.setResizable(false);
         frame.setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        frame.setIconImage(new ImageIcon("src\\images\\logo.png").getImage());
         //! MAIN SCREEN
         title = new JLabel("ExploreOffline",SwingConstants.CENTER); // Title Text
         title.setFont(new Font("Serif", Font.PLAIN, 65));
@@ -99,6 +113,7 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
         mainScreenButton.addActionListener(this);
         mainScreenButton.setBounds(300,350,200,50);
         mainScreenButton.setText("Explore!");
+        
         
 
         //! SUBJECT OPTION SCREEN
@@ -262,14 +277,66 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
         topicBackButton.setVisible(false);
         topicLabel.setVisible(false);
         topicSubmitButton.setVisible(false);
-        
-        //TODO Topics
-        // Each button has a index, capture that index and since you already have the current Subject var
-        // run it thru a process in dataprocesser and do 6 topics for each question
-        // store in lists
-        //gradeChoicePanel.setBounds();
-        // *Adds Elements to panel
-        // *Adds panels to Frame
+
+        //! QUESTION SCREEN!!!!
+        // create buttons to appear and start mmethod
+        mcOptions = new JPanel();
+        mcOptions.setBounds(100, 250, 600, 300);
+        mcOptions.setLayout(new GridLayout(2, 2, 50, 50));
+        mcOptionA = new JButton();
+        mcOptionB = new JButton();
+        mcOptionC = new JButton();
+        mcOptionD = new JButton();
+        mcOptionA.addActionListener(this);
+        mcOptionB.addActionListener(this);
+        mcOptionC.addActionListener(this);
+        mcOptionD.addActionListener(this);
+        questionLabel = new JLabel();
+        questionLabel.setBounds(50,50,700,50);
+        mcOptions.add(mcOptionA);
+        mcOptions.add(mcOptionB);
+        mcOptions.add(mcOptionC);
+        mcOptions.add(mcOptionD);
+        feedbackText = new JLabel();
+        feedbackText.setBounds(150,50,500,50);
+        feedbackText.setFont(new Font("Serif", Font.PLAIN, 25));
+        feedbackAnswer = new JLabel();
+        feedbackAnswer.setBounds(200,125,400,60);
+        feedbackExplanation = new JLabel();
+        feedbackExplanation.setBounds(50, 200, 700, 250);
+        nextQueButton = new JButton();
+        nextQueButton.setText("Next Question");
+        nextQueButton.addActionListener(this);
+        nextQueButton.setBounds(200,475,400,75);
+        feedbackExplanation.setVisible(false);
+        feedbackText.setVisible(false);
+        feedbackAnswer.setVisible(false);
+        nextQueButton.setVisible(false);
+        mcOptions.setVisible(false);
+        questionLabel.setVisible(false);
+        questionLabel = new JLabel();
+        questionLabel.setBounds(100,50,600,50);
+
+
+        //! FINAL SCREEN
+        finalResultsPanel = new JPanel();
+        JLabel finalL1 = new JLabel("              Congrats!              ");
+        finalL2 = new JLabel();
+        closeQuestionsButton = new JButton();
+        closeQuestionsButton.addActionListener(this);
+        closeQuestionsButton.setText("Keep Exploring!");
+        finalL1.setFont(new Font("Serif", Font.PLAIN, 50));
+        finalL2.setFont(new Font("Serif", Font.PLAIN, 30));
+        closeQuestionsButton.setFont(new Font("Serif", Font.PLAIN, 20));
+        finalResultsPanel.setBounds(100,50,600,500);
+        finalResultsPanel.add(finalL1);
+        finalResultsPanel.add(finalL2);
+        finalResultsPanel.add(closeQuestionsButton);
+        finalResultsPanel.setLayout(new GridLayout(3,1,0,50));
+        finalResultsPanel.setVisible(false);
+
+
+        //! ADD TO FRAME
         frame.add(title);
         frame.add(mainScreenButton);
         frame.add(subjectTextHeader);
@@ -284,12 +351,18 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
         frame.add(topicLabel);
         frame.add(topicSubmitButton);
         frame.add(numQuestionPanel);
+        frame.add(feedbackExplanation);
+        frame.add(feedbackText);
+        frame.add(feedbackAnswer);
+        frame.add(nextQueButton);
+        frame.add(mcOptions);
+        frame.add(questionLabel);
+        frame.add(finalResultsPanel);
         //Display the window.
         frame.setVisible(true);
         
     }
 
-    //* Item State Changed @remind
     public static void subjectSetup(String subject){
         //set up template pannels
         gradeChoiceText.setBounds(225,50,350,75);
@@ -323,6 +396,7 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
         t6CB.setText(topicArray[5]);
         topicLabel.setText(level + "Topics");
     }
+
 
     //! FOR CHECKBOXES
     static int maxValue = 0;
@@ -518,11 +592,30 @@ public class GUI implements ActionListener, ItemListener,ChangeListener {
             topicLabel.setVisible(false);
             topicSubmitButton.setVisible(false);
             numQuestionPanel.setVisible(false);
-            dataprocesser.questionSetup(topicCheckedList, numQuestionSlider.getValue());
+            dataprocesser.questionSetup(numQuestionSlider.getValue(),topicCheckedList);
+            questionCount = numQuestionSlider.getValue();
+            GUI.mcOptions.setVisible(true);
+            GUI.questionLabel.setVisible(true);
+        }else if(e.getSource() == mcOptionA){
+            questionsMode.feedback(1);
+        }else if(e.getSource() == mcOptionB){
+            questionsMode.feedback(2);
+        }else if(e.getSource() == mcOptionC){
+            questionsMode.feedback(3);
+        }else if(e.getSource() == mcOptionD){
+            questionsMode.feedback(4);
+        }else if(e.getSource() == nextQueButton){
 
-        }
-        else{
-
+            GUI.feedbackExplanation.setVisible(false);
+            GUI.feedbackText.setVisible(false);
+            GUI.feedbackAnswer.setVisible(false);
+            GUI.nextQueButton.setVisible(false);
+            dataprocesser.nextQuestion();
+        }else if(e.getSource() == closeQuestionsButton){
+            finalResultsPanel.setVisible(false);
+            subjectTextHeader.setVisible(true);
+            subjectButtonPannel.setVisible(true);
+            frame.getContentPane().setBackground(new Color(238,238,238));
         }
         
     }

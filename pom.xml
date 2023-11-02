@@ -19,6 +19,13 @@
   </properties>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.scilab.forge</groupId>
+      <artifactId>jlatexmath</artifactId>
+      <version>1.0.7</version>
+    </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -43,15 +50,11 @@
         <version>0.36.0</version>
     </dependency>
     <dependency>
-        <groupId>com.verybigcorp</groupId>
-        <artifactId>jlatexmath</artifactId>
-        <version>1.0.7</version> 
-    </dependency>
-    <dependency>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-controls</artifactId>
         <version>11.0.2</version> 
     </dependency>
+
 </dependencies>
 
   </dependencies>
